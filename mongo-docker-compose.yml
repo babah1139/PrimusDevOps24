@@ -1,0 +1,31 @@
+services:
+  webserver:
+    image: nginx:alpine3.19
+    ports:
+      - "80:80"
+      - "100:80"
+
+  mongodb:
+    image: mongo:jammy
+    restart: always
+    volumes:
+      - mongodb:/etc/mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+
+  mongo-express:
+    image: mongo-express:1.0.2-20-alpine3.19
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH: false
+    volumes:
+    - mongo-express:/usr/local/bin/config
+
+volumes:
+  mongodb:
+  mongo-express: 
